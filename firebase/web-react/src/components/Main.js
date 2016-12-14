@@ -14,9 +14,8 @@ export default class extends React.Component{
                             <div id="messages">
                                 <span id="message-filler"></span>
                                 {
-                                    dataset.map( data => <Message key={data.id} nombre={data.nombre} mensaje={data.mensaje} /> )
+                                    dataset.map( data => <Message key={data.key} data={data} /> )
                                 }
-                                <Message/>
                             </div>
                             <Form/>
                         </div>

@@ -2,6 +2,7 @@ import React from 'react'
 
 export default class extends React.Component {
   render(){
+    const { auth, provider, user } = this.props
     return(
       <header className="mdl-layout__header mdl-color-text--white mdl-color--light-blue-700">
         <div className="mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-grid">
@@ -14,9 +15,12 @@ export default class extends React.Component {
             <button hidden id="sign-out" className="mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--white">
               Sign-out
             </button>
-            <button id="sign-in" className="mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--white">
-              <i className="material-icons">account_circle</i>Sign-in with Google
-            </button>
+            {
+              user === null &&
+              <button id="sign-in" className="mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--white" onClick={()=>{ auth.signInWithPopup(provider); }}>
+                <i className="material-icons">account_circle</i>Sign-in with Google
+              </button>
+            }
           </div>
         </div>
       </header>
