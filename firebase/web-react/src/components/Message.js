@@ -1,8 +1,30 @@
 import React from 'react'
 
-export default class extends React.Component {
+export default React.createClass ({
+    componentDidMount(){
+      const { imageUrl } = this.props.data
+      const { storage } = this.props
+
+      const that = this
+
+      if(imageUrl){
+        console.log(imageUrl)
+        storage.refFromURL(imageUrl).getMetadata().then(function(metadata) {
+          that.setState({imageUrl:metadata.downloadURLs[0]})
+        } )
+      }
+
+    },
+    getInitialState(){
+      return({
+        imageUrl:this.props.imageUrl
+      })
+    },
     render() {
-        const { name, text, photoUrl,  imageUrl } = this.props.data
+        const { name, text, photoUrl, } = this.props.data
+        const { imageUrl } = this.state
+
+          console.log('messages', imageUrl)
         const backgroundImage = {backgroundImage:`url("${photoUrl}")`}
         // console.log(text, imageUrl)
 
@@ -13,10 +35,10 @@ export default class extends React.Component {
                 </div>
                 <div className="message">
                   {text}
-                  {imageUrl && <img src={imageUrl}/>}
+                  {imageUrl && <img  role="presentation" src={imageUrl}/>}
                 </div>
                 <div className="name">{name}</div>
             </div>
         )
     }
-}
+})

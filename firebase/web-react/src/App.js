@@ -4,6 +4,7 @@ import './App.css';
 import Header from './components/Header'
 import Main from './components/Main'
 import * as firebase from 'firebase';
+import _ from 'lodash'
 
 // Initialize Firebase
 const firebaseConfig = {
@@ -28,29 +29,15 @@ export default React.createClass ({
   auth:firebase.auth(),
   provider:new firebase.auth.GoogleAuthProvider(),
   setMessage(data){
-    const val = data.val();
-    val.key = data.key
-    if(val.imageUrl!==undefined && val.imageUrl.startsWith("gs://")){
-      storage.refFromURL(val.imageUrl).getMetadata().then(
-        metadata => {
-          const {dataset} = this.state
-          val.imageUrl = metadata.downloadURLs[0];
-          dataset.push(val)
-          this.setState({dataset:dataset})
-      });
-
-    } else {
-      const {dataset} = this.state
-      dataset.push(val)
-      this.setState({dataset:dataset})
-    }
+    const dataset = _.values(data.val())
+    this.setState({dataset:dataset})
   },
   onAuthStateChanged(user){
     // console.log(user)
     this.setState({user:user})
   },
   componentDidMount(){
-    messagesRef.limitToLast(12).on('child_added', this.setMessage)
+    messagesRef.once('value', this.setMessage)
     // const provider = new firebase.auth.GoogleAuthProvider();
     this.auth.onAuthStateChanged(this.onAuthStateChanged)
 
@@ -74,7 +61,7 @@ export default React.createClass ({
     return (
       <div className="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-header">
         <Header title="Chat Todología" auth={this.auth} provider={this.provider} user={user}/>
-        <Main dataset={dataset}/>
+        <Main storage={storage} dataset={dataset}/>
       </div>
     );
   }

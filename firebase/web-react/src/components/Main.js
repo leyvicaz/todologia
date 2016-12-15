@@ -4,7 +4,7 @@ import Message from './Message'
 
 export default class extends React.Component{
     render() {
-        const { dataset } = this.props //destructuring
+        const { dataset, storage } = this.props //destructuring
         return (
             <main className="mdl-layout__content mdl-color--grey-100">
                 <div id="messages-card-container" className="mdl-cell mdl-cell--12-col mdl-grid">
@@ -14,7 +14,7 @@ export default class extends React.Component{
                             <div id="messages">
                                 <span id="message-filler"></span>
                                 {
-                                    dataset.map( data => <Message key={data.key} data={data} /> )
+                                    dataset.map( (data,key) => <Message storage={storage} key={key} data={data} /> )
                                 }
                             </div>
                             <Form/>
