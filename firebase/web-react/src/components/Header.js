@@ -12,7 +12,6 @@ export default class extends React.Component {
         backgroundImage:`url(${user.photoURL})`
       }
       const { displayName } = user
-      console.log('pic', pic)
       return (
         <div id="user-container">
           <div id="user-pic" style={pic}></div>

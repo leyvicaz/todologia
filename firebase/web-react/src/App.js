@@ -33,7 +33,6 @@ export default React.createClass ({
     this.setState({dataset:dataset})
   },
   onAuthStateChanged(user){
-    // console.log(user)
     this.setState({user:user})
   },
   componentDidMount(){
@@ -57,11 +56,10 @@ export default React.createClass ({
   },
   render() {
     const { dataset, user } = this.state
-    console.log(this.props.title)
     return (
       <div className="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-header">
         <Header title="Chat Todología" auth={this.auth} provider={this.provider} user={user}/>
-        <Main storage={storage} dataset={dataset}/>
+        <Main storage={storage} dataset={dataset} user={user}/>
       </div>
     );
   }

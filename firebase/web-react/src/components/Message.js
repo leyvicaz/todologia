@@ -1,6 +1,26 @@
 import React from 'react'
+import { isUndefined } from 'lodash'
 
 export default React.createClass ({
+    componentWillReceiveProps(nextProps){
+      console.log('prueba', nextProps.user!==this.props.user)
+      if(this.props.user !== nextProps.user){
+        console.log('prueba2', this.props.data.imageUrl, !isUndefined(this.props.data.imageUrl))
+        if(!isUndefined(this.props.data.imageUrl)){
+          const { imageUrl } = this.props.data
+          const { storage } = this.props
+          const that = this
+          if(imageUrl){
+            console.log('imageUrl', imageUrl)
+            storage.refFromURL(imageUrl).getMetadata().then(function(metadata) {
+              that.setState({imageUrl:metadata.downloadURLs[0]})
+            } ).catch( error => {
+              that.setState({imageUrl:'https://www.google.com/images/spin-32.gif'})
+            } )
+          }
+        }
+      }
+    },
     componentDidMount(){
       const { imageUrl } = this.props.data
       const { storage } = this.props
@@ -11,6 +31,8 @@ export default React.createClass ({
         console.log(imageUrl)
         storage.refFromURL(imageUrl).getMetadata().then(function(metadata) {
           that.setState({imageUrl:metadata.downloadURLs[0]})
+        } ).catch( error => {
+          that.setState({imageUrl:'https://www.google.com/images/spin-32.gif'})
         } )
       }
 
@@ -24,9 +46,7 @@ export default React.createClass ({
         const { name, text, photoUrl, } = this.props.data
         const { imageUrl } = this.state
 
-          console.log('messages', imageUrl)
         const backgroundImage = {backgroundImage:`url("${photoUrl}")`}
-        // console.log(text, imageUrl)
 
         return (
             <div className="message-container visible" id="-K2ib4H77rj0LYewF7dP">
