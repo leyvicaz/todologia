@@ -19,24 +19,40 @@ const firebaseApp = firebase.initializeApp(firebaseConfig);
 const messagesRef = firebaseApp.database().ref('messages')
 const storage = firebaseApp.storage();
 
-// const dataset= [
-//     {id:1, nombre:"erik", mensaje:"hola"},
-//     {id:2, nombre:"leyvi", mensaje:"hola"},
-//     {id:3, nombre:"roger", mensaje:"hola"}
-//     ]
-
 export default React.createClass ({
   auth:firebase.auth(),
   provider:new firebase.auth.GoogleAuthProvider(),
-  setMessage(data){
-    const dataset = _.values(data.val())
+  setMessages(data){
+    const dataset = _.map(data.val(), (item, key) => {
+      const result = item
+      item.id = key
+      return item
+    })
     this.setState({dataset:dataset})
+    messagesRef.off();
+    messagesRef.on('child_changed', this.changeMessage);
+  },
+  changeMessage(data){
+    const key = data.getKey()
+    const values = data.val()
+    const { dataset } = this.state
+    const index = _.findIndex(dataset, d => d.id == key)
+
+    const newDataset = _.update(dataset, [index],
+      function(){
+        const item = values
+        item.id = key
+        return item
+      }
+    )
+
+    this.setState({dataset:newDataset})
   },
   onAuthStateChanged(user){
     this.setState({user:user})
   },
   componentDidMount(){
-    messagesRef.once('value', this.setMessage)
+    messagesRef.once('value', this.setMessages)
     // const provider = new firebase.auth.GoogleAuthProvider();
     this.auth.onAuthStateChanged(this.onAuthStateChanged)
 
