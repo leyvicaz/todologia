@@ -24,29 +24,28 @@ export default React.createClass ({
   provider:new firebase.auth.GoogleAuthProvider(),
   setMessages(data){
     const dataset = _.map(data.val(), (item, key) => {
-      const result = item
       item.id = key
       return item
     })
     this.setState({dataset:dataset})
     messagesRef.off();
-    messagesRef.on('child_changed', this.changeMessage);
+    messagesRef.on('child_added', this.setMessage);
+    messagesRef.on('child_changed', this.setMessage);
   },
-  changeMessage(data){
+  setMessage(data){
     const key = data.getKey()
     const values = data.val()
-    const { dataset } = this.state
-    const index = _.findIndex(dataset, d => d.id == key)
+    values.id = key
+    let { dataset } = this.state
+    const index = _.findIndex(dataset, d => d.id === key)
 
-    const newDataset = _.update(dataset, [index],
-      function(){
-        const item = values
-        item.id = key
-        return item
+    if(index){
+      dataset = _.update(dataset, [index], () => values)
+    } else {
+      dataset.push(values)
       }
-    )
 
-    this.setState({dataset:newDataset})
+    this.setState({dataset:dataset})
   },
   onAuthStateChanged(user){
     this.setState({user:user})

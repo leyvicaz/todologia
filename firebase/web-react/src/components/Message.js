@@ -3,15 +3,12 @@ import { isUndefined } from 'lodash'
 
 export default React.createClass ({
     componentWillReceiveProps(nextProps){
-      console.log('prueba', nextProps.user!==this.props.user)
       if(this.props.user !== nextProps.user){
-        console.log('prueba2', this.props.data.imageUrl, !isUndefined(this.props.data.imageUrl))
         if(!isUndefined(this.props.data.imageUrl)){
           const { imageUrl } = this.props.data
           const { storage } = this.props
           const that = this
           if(imageUrl){
-            console.log('imageUrl', imageUrl)
             storage.refFromURL(imageUrl).getMetadata().then(function(metadata) {
               that.setState({imageUrl:metadata.downloadURLs[0]})
             } ).catch( error => {
@@ -28,7 +25,6 @@ export default React.createClass ({
       const that = this
 
       if(imageUrl){
-        console.log(imageUrl)
         storage.refFromURL(imageUrl).getMetadata().then(function(metadata) {
           that.setState({imageUrl:metadata.downloadURLs[0]})
         } ).catch( error => {
