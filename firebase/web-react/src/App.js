@@ -47,6 +47,14 @@ export default React.createClass ({
 
     this.setState({dataset:dataset})
   },
+  onSubmit(values){
+    values.name = this.state.user.displayName,
+    values.photoUrl = this.state.user.photoURL || '/images/profile_placeholder.png'
+    console.log('onSubmit', values)
+    messagesRef.push(values).then(()=>{
+    }).catch(()=>{
+    })
+  },
   onAuthStateChanged(user){
     this.setState({user:user})
   },
@@ -74,7 +82,7 @@ export default React.createClass ({
     return (
       <div className="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-header">
         <Header title="Chat Todología" auth={this.auth} provider={this.provider} user={user}/>
-        <Main storage={storage} dataset={dataset} user={user}/>
+        <Main storage={storage} dataset={dataset} user={user} onSubmit={this.onSubmit}/>
       </div>
     );
   }
