@@ -14,7 +14,7 @@ export default class extends React.Component{
                 <div id="messages-card-container" className="mdl-cell mdl-cell--12-col mdl-grid">
                     <div id="messages-card" className="mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-cell--6-col-tablet mdl-cell--6-col-desktop">
                         <div className="mdl-card__supporting-text mdl-color-text--grey-600">
-                            <div ref="messages">
+                            <div id="messages" ref="messages">
                                 <span id="message-filler"></span>
                                 <ReactCSSTransitionGroup
                                   transitionName="message-container"
