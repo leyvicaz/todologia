@@ -9,6 +9,8 @@ export default React.createClass({
   },
   onSubmit(){
     this.props.onSubmit(this.state)
+    this.setState({text:''})
+    ReactDOM.findDOMNode(this.refs.text).focus();
   },
   onChange(name, value){
     this.setState({[name]:value})
@@ -25,7 +27,7 @@ export default React.createClass({
       return (
         <form id="message-form" action="#" onSubmit={this.onSubmit}>
           <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-            <input className="mdl-textfield__input" ref="text" type="text" value={this.state.message} onChange={ e => onChange('text', e.target.value) } />
+            <input className="mdl-textfield__input" ref="text" type="text" value={this.state.text} onChange={ e => onChange('text', e.target.value) } />
             <label className="mdl-textfield__label" htmlFor="message">Message...</label>
           </div>
           <button id="submit" type="submit" className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
