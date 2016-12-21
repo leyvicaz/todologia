@@ -3,43 +3,40 @@ import { isUndefined } from 'lodash'
 
 export default React.createClass ({
     componentWillReceiveProps(nextProps){
-      if(this.props.user !== nextProps.user){
-        if(!isUndefined(this.props.data.imageUrl)){
-          const { imageUrl } = this.props.data
-          const { storage } = this.props
-          const that = this
-          if(imageUrl){
-            storage.refFromURL(imageUrl).getMetadata().then(function(metadata) {
-              that.setState({imageUrl:metadata.downloadURLs[0]})
-            } ).catch( error => {
-              that.setState({imageUrl:'https://www.google.com/images/spin-32.gif'})
-            } )
-          }
+      if(nextProps.user !== null){
+        if(!isUndefined(nextProps.data.imageUrl)){
+          const { imageUrl } = nextProps.data
+          this.getImageUrl(imageUrl)
         }
       }
     },
     componentDidMount(){
       const { imageUrl } = this.props.data
-      const { storage } = this.props
-
-      const that = this
-
-      if(imageUrl){
-        storage.refFromURL(imageUrl).getMetadata().then(function(metadata) {
-          that.setState({imageUrl:metadata.downloadURLs[0]})
-        } ).catch( error => {
-          that.setState({imageUrl:'https://www.google.com/images/spin-32.gif'})
-        } )
-      }
-
+      this.getImageUrl(imageUrl)
     },
-    getInitialState(){
+    getImageUrl(imageUrl){
+      const { storage } = this.props
+      const that = this
+      if(imageUrl){
+        if(imageUrl.startsWith('gs://')){
+          storage.refFromURL(imageUrl).getMetadata().then(function(metadata) {
+            that.setState({imageUrl:metadata.downloadURLs[0]})
+          } ).catch( error => {
+            that.setState({imageUrl:'https://www.google.com/images/spin-32.gif'})
+          } )
+        } else {
+          that.setState({imageUrl:imageUrl})
+        }
+      }
+    },
+    getInitialState(imageUrl){
       return({
         imageUrl:this.props.imageUrl
       })
     },
     render() {
-        const { name, text, photoUrl, } = this.props.data
+        const { name, text, photoUrl } = this.props.data
+        const { resize } = this.props
         const { imageUrl } = this.state
 
         const backgroundImage = {backgroundImage:`url("${photoUrl}")`}
@@ -52,7 +49,12 @@ export default React.createClass ({
                   </div>
                   <div className="message">
                     {text}
-                    {imageUrl && <img  role="presentation" src={imageUrl}/>}
+                    {imageUrl && <img
+                        role="presentation"
+                        src={imageUrl}
+                        onLoad={()=>{resize()}}
+                      />
+                    }
                   </div>
                   <div className="name">{name}</div>
               </div>

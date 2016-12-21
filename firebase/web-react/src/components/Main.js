@@ -5,10 +5,14 @@ import Message from './Message'
 
 export default class extends React.Component{
     componentDidUpdate() {
+      this.resize.bind(this)()
+    }
+    resize(){
       this.refs.messages.scrollTop = this.refs.messages.scrollHeight
     }
     render() {
         const { dataset, storage, user, onSubmit } = this.props //destructuring
+        const resize = this.resize.bind(this)
         return (
             <main className="mdl-layout__content mdl-color--grey-100">
                 <div id="messages-card-container" className="mdl-cell mdl-cell--12-col mdl-grid">
@@ -22,7 +26,7 @@ export default class extends React.Component{
                                   transitionLeave={false}
                                 >
                                   {
-                                      dataset.map( (data,key) => <Message user={user} storage={storage} key={key} data={data} /> )
+                                      dataset.map( (data,key) => <Message resize={resize} user={user} storage={storage} key={key} data={data} /> )
                                   }
                                 </ReactCSSTransitionGroup>
                             </div>
