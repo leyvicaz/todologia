@@ -19,6 +19,7 @@ export default React.createClass ({
       const that = this
       if(imageUrl){
         if(imageUrl.startsWith('gs://')){
+          that.setState({imageUrl:'https://www.google.com/images/spin-32.gif'})
           storage.refFromURL(imageUrl).getMetadata().then(function(metadata) {
             that.setState({imageUrl:metadata.downloadURLs[0]})
           } ).catch( error => {
