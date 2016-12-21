@@ -92,10 +92,12 @@ main, #messages-card {
   margin-top: 10px;
   border-top: 1px solid #f3f3f3;
   padding-top: 10px;
+}
+.message-container-enter {
   opacity: 0;
   transition: opacity 1s ease-in-out;
 }
-.message-container.visible {
+.message-container-enter.message-container-enter-active {
   opacity: 1;
 }
 .message-container .pic {
@@ -222,4 +224,3 @@ main, #messages-card {
   top: -1px;
   margin-right: 5px;
 }
-

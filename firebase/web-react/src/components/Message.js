@@ -45,16 +45,18 @@ export default React.createClass ({
         const backgroundImage = {backgroundImage:`url("${photoUrl}")`}
 
         return (
-            <div className="message-container visible" id="-K2ib4H77rj0LYewF7dP">
-                <div className="spacing">
-                    <div className="pic" style={photoUrl!==undefined?backgroundImage:{}}></div>
-                </div>
-                <div className="message">
-                  {text}
-                  {imageUrl && <img  role="presentation" src={imageUrl}/>}
-                </div>
-                <div className="name">{name}</div>
-            </div>
+
+              <div className="message-container">
+                  <div className="spacing">
+                      <div className="pic" style={photoUrl!==undefined?backgroundImage:{}}></div>
+                  </div>
+                  <div className="message">
+                    {text}
+                    {imageUrl && <img  role="presentation" src={imageUrl}/>}
+                  </div>
+                  <div className="name">{name}</div>
+              </div>
+
         )
     }
 })

@@ -39,7 +39,7 @@ export default React.createClass ({
     let { dataset } = this.state
     const index = _.findIndex(dataset, d => d.id === key)
 
-    if(index){
+    if(index >= 0){
       dataset = _.update(dataset, [index], () => values)
     } else {
       dataset.push(values)
@@ -48,7 +48,7 @@ export default React.createClass ({
     this.setState({dataset:dataset})
   },
   onSubmit(values){
-    values.name = this.state.user.displayName,
+    values.name = this.state.user.displayName
     values.photoUrl = this.state.user.photoURL || '/images/profile_placeholder.png'
     console.log('onSubmit', values)
     messagesRef.push(values).then(()=>{
